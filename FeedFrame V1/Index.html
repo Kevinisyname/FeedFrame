@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)file:///Users/Kevin.Shaji/Downloads/feedframe_1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FeedFrame — Social Mockup Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./FeedFrame — Social Mockup Tool_files/css2" rel="stylesheet">
+<script src="./FeedFrame — Social Mockup Tool_files/saved_resource"></script>
+<style>
+  :root {
+    --cg-navy: #1a2332;
+    --cg-red: #c8102e;
+    --cg-red-light: #e8294a;
+    --cg-charcoal: #2d3748;
+    --cg-mist: #f0f2f5;
+    --cg-white: #ffffff;
+    --surface: #f7f8fa;
+    --border: #e2e6ea;
+    --text-primary: #1a2332;
+    --text-secondary: #64748b;
+    --text-tertiary: #94a3b8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .app-header {
+    background: var(--cg-navy);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-mark {
+    width: 28px;
+    height: 28px;
+    background: var(--cg-red);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    color: white;
+    font-size: 14px;
+    letter-spacing: -0.5px;
+  }
+  .logo-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 17px;
+    color: white;
+    letter-spacing: -0.3px;
+  }
+  .logo-text span {
+    color: var(--cg-red);
+  }
+  .header-badge {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── LAYOUT ── */
+  .app-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    min-height: calc(100vh - 56px);
+  }
+
+  /* ── LEFT PANEL ── */
+  .left-panel {
+    background: white;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 56px);
+    position: sticky;
+    top: 56px;
+    overflow-y: auto;
+  }
+
+  .panel-section {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .panel-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+  }
+
+  /* ── UPLOAD ZONE ── */
+  .upload-zone {
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: var(--surface);
+    position: relative;
+  }
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: var(--cg-red);
+    background: #fff5f6;
+  }
+  .upload-zone input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+  .upload-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 10px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .upload-icon svg { color: var(--text-secondary); }
+  .upload-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .upload-sub {
+    font-size: 11px;
+    color: var(--text-tertiary);
+  }
+
+  /* ── FILE LIST ── */
+  .file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .file-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    background: var(--surface);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .file-thumb {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    object-fit: cover;
+    background: #e2e8f0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .file-thumb img, .file-thumb video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .file-info { flex: 1; min-width: 0; }
+  .file-name {
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-primary);
+  }
+  .file-meta { font-size: 11px; color: var(--text-tertiary); }
+  .file-remove {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--text-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .file-remove:hover { background: #fee2e2; color: var(--cg-red); }
+
+  /* ── PLATFORM SWITCHER ── */
+  .platform-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .platform-btn {
+    padding: 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  .platform-btn:hover { border-color: var(--cg-navy); }
+  .platform-btn.active {
+    border-color: var(--cg-red);
+    background: #fff5f6;
+  }
+  .platform-btn.active .platform-name { color: var(--cg-red); }
+  .platform-icon { font-size: 18px; }
+  .platform-name { font-size: 11px; font-weight: 500; color: var(--text-secondary); }
+
+  /* ── ASPECT RATIO WARNING ── */
+  .ratio-warning {
+    display: none;
+    background: #fffbeb;
+    border: 1px solid #fbbf24;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 12px;
+  }
+  .ratio-warning.visible { display: block; }
+  .ratio-warning-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #92400e;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .ratio-warning-text { font-size: 11px; color: #78350f; line-height: 1.5; margin-bottom: 10px; }
+  .ratio-warning-actions { display: flex; gap: 8px; }
+  .btn-resubmit, .btn-continue {
+    flex: 1;
+    padding: 7px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+  .btn-resubmit { background: white; border: 1px solid #fbbf24; color: #92400e; }
+  .btn-resubmit:hover { background: #fef3c7; }
+  .btn-continue { background: var(--cg-navy); color: white; }
+  .btn-continue:hover { background: var(--cg-charcoal); }
+
+  /* ── PREVIEW PANEL ── */
+  .right-panel {
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    min-height: calc(100vh - 56px);
+  }
+
+  .preview-header {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  .preview-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--cg-navy);
+    font-style: italic;
+  }
+  .preview-platform-tag {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: var(--cg-navy);
+    color: white;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex: 1;
+    width: 100%;
+    min-height: 400px;
+    padding: 2rem;
+  }
+  .empty-icon {
+    width: 64px;
+    height: 64px;
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    color: var(--text-tertiary);
+  }
+  .empty-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: var(--cg-navy);
+    margin-bottom: 8px;
+  }
+  .empty-sub { font-size: 13px; color: var(--text-tertiary); }
+
+  /* ── INSTAGRAM FEED MOCKUP ── */
+  .ig-feed-wrapper {
+    width: 100%;
+    max-width: 470px;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  /* IG top bar */
+  .ig-topbar {
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .ig-logo {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 20px;
+    font-weight: 200;
+    color: #111;
+  }
+  .ig-topbar-icons { display: flex; gap: 16px; color: #111; }
+
+  /* IG stories */
+  .ig-stories {
+    padding: 10px 14px;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    border-bottom: 1px solid #f0f0f0;
+    scrollbar-width: none;
+  }
+  .ig-stories::-webkit-scrollbar { display: none; }
+  .ig-story {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .ig-story-ring {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    padding: 2px;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  }
+  .ig-story-ring.yours { background: #e2e8f0; }
+  .ig-story-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid white;
+    background: #e2e8f0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ig-story-name { font-size: 10px; color: #333; max-width: 54px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* IG post */
+  .ig-post { border-bottom: 1px solid #f0f0f0; }
+  .ig-post-header {
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ig-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .ig-post-meta { flex: 1; }
+  .ig-username { font-size: 12px; font-weight: 600; color: #111; }
+  .ig-location { font-size: 11px; color: #888; }
+  .ig-more { color: #111; cursor: pointer; }
+
+  /* IG media */
+  .ig-media {
+    width: 100%;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+  }
+  .ig-media img, .ig-media video {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  /* carousel dots */
+  .ig-carousel-dots {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+  }
+  .ig-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.6);
+  }
+  .ig-dot.active { background: #3897f0; width: 6px; }
+  /* carousel arrows */
+  .ig-carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    pointer-events: none;
+  }
+  .ig-carousel-btn {
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: all;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    transition: opacity 0.15s;
+  }
+  .ig-carousel-btn:disabled { opacity: 0; pointer-events: none; }
+
+  /* IG actions */
+  .ig-actions {
+    padding: 8px 14px 4px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .ig-action { color: #111; cursor: pointer; display: flex; align-items: center; }
+  .ig-bookmark { margin-left: auto; }
+  .ig-likes { padding: 0 14px; font-size: 13px; font-weight: 600; color: #111; margin-bottom: 4px; }
+  .ig-caption {
+    padding: 0 14px 6px;
+    font-size: 13px;
+    color: #111;
+    line-height: 1.4;
+  }
+  .ig-caption strong { font-weight: 600; }
+  .ig-caption .hashtag { color: #00376b; }
+  .ig-comment-count { padding: 0 14px 6px; font-size: 13px; color: #888; cursor: pointer; }
+  .ig-timestamp { padding: 0 14px 10px; font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  /* ── INSTAGRAM STORY MOCKUP ── */
+  .ig-story-wrapper {
+    width: 100%;
+    max-width: 340px;
+    aspect-ratio: 9/16;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  }
+  .story-media { width: 100%; height: 100%; object-fit: cover; }
+  .story-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.4) 100%);
+  }
+  .story-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 12px;
+  }
+  .story-progress { display: flex; gap: 3px; margin-bottom: 10px; }
+  .story-progress-bar {
+    flex: 1;
+    height: 2px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 2px;
+  }
+  .story-progress-bar.active { background: white; }
+  .story-header { display: flex; align-items: center; gap: 8px; }
+  .story-avatar { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid white; overflow: hidden; }
+  .story-username { font-size: 12px; font-weight: 600; color: white; }
+  .story-time { font-size: 11px; color: rgba(255,255,255,0.7); }
+  .story-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .story-reply-input {
+    flex: 1;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 12px;
+    color: white;
+    outline: none;
+    cursor: default;
+  }
+  .story-reply-input::placeholder { color: rgba(255,255,255,0.7); }
+
+  /* ── TIKTOK MOCKUP ── */
+  .tiktok-wrapper {
+    width: 100%;
+    max-width: 340px;
+    aspect-ratio: 9/16;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  }
+  .tiktok-media { width: 100%; height: 100%; object-fit: cover; }
+  .tiktok-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 60%, rgba(0,0,0,0.3) 100%),
+                linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 40%);
+  }
+  .tiktok-right {
+    position: absolute;
+    right: 10px;
+    bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .tiktok-avatar-ring {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid white;
+    overflow: hidden;
+    position: relative;
+  }
+  .tiktok-plus {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px; height: 16px;
+    background: #fe2c55;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    border: 1.5px solid #000;
+  }
+  .tiktok-action { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .tiktok-action-count { font-size: 10px; color: white; font-weight: 500; }
+  .tiktok-bottom {
+    position: absolute;
+    left: 12px;
+    right: 60px;
+    bottom: 0;
+    padding-bottom: 20px;
+  }
+  .tiktok-username { font-size: 13px; font-weight: 700; color: white; margin-bottom: 4px; }
+  .tiktok-caption { font-size: 12px; color: white; line-height: 1.4; margin-bottom: 8px; opacity: 0.9; }
+  .tiktok-sound { font-size: 11px; color: white; opacity: 0.8; display: flex; align-items: center; gap: 4px; }
+  .tiktok-disc {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #333;
+    border: 3px solid #555;
+    overflow: hidden;
+    position: absolute;
+    right: 12px;
+    bottom: 20px;
+  }
+  .tiktok-topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+  .tiktok-tab { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); }
+  .tiktok-tab.active { color: white; font-weight: 700; border-bottom: 2px solid white; padding-bottom: 2px; }
+
+  /* ── LINKEDIN MOCKUP ── */
+  .linkedin-wrapper {
+    width: 100%;
+    max-width: 470px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    border: 1px solid #e0e0e0;
+  }
+  .li-header {
+    background: #0a66c2;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .li-logo { color: white; font-weight: 800; font-size: 18px; letter-spacing: -0.5px; font-family: sans-serif; }
+  .li-search {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: white;
+    width: 160px;
+    outline: none;
+  }
+  .li-search::placeholder { color: rgba(255,255,255,0.6); }
+  .li-post {
+    padding: 12px 14px 0;
+  }
+  .li-post-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .li-avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+  .li-meta { flex: 1; }
+  .li-name { font-size: 13px; font-weight: 600; color: #000; line-height: 1.2; }
+  .li-tagline { font-size: 11px; color: #666; line-height: 1.3; }
+  .li-time { font-size: 11px; color: #999; }
+  .li-globe { font-size: 10px; color: #999; }
+  .li-caption-text { font-size: 13px; color: #111; line-height: 1.5; margin-bottom: 10px; }
+  .li-caption-text .li-hashtag { color: #0a66c2; }
+  .li-media {
+    width: 100%;
+    background: #000;
+    overflow: hidden;
+    aspect-ratio: 1.91;
+  }
+  .li-media img, .li-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .li-reactions {
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 11px;
+    color: #666;
+  }
+  .li-reaction-icons { display: flex; gap: -4px; }
+  .li-reaction-emoji { font-size: 14px; }
+  .li-actions {
+    display: flex;
+    padding: 2px 6px;
+  }
+  .li-action-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.15s;
+  }
+  .li-action-btn:hover { background: #f3f2ef; }
+
+  /* ── CG AVATAR SVG ── */
+  .cg-avatar {
+    width: 100%;
+    height: 100%;
+    background: var(--cg-navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: -0.3px;
+  }
+
+  /* ── ASPECT RATIO DISPLAY per platform ── */
+  .ig-media.ratio-4-5 { aspect-ratio: 4/5; }
+  .ig-media.ratio-1-1 { aspect-ratio: 1/1; }
+  .ig-media.ratio-1-91 { aspect-ratio: 1.91/1; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    .app-layout {
+      grid-template-columns: 1fr;
+    }
+    .left-panel {
+      height: auto;
+      position: static;
+    }
+    .right-panel {
+      padding: 1.25rem;
+    }
+    .mobile-preview-header {
+      display: flex !important;
+    }
+  }
+
+  /* ── SCROLLBAR ── */
+  .left-panel::-webkit-scrollbar { width: 4px; }
+  .left-panel::-webkit-scrollbar-track { background: transparent; }
+  .left-panel::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
+
+  /* ── ANIMATION ── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .preview-animate { animation: fadeIn 0.3s ease; }
+
+  /* ── CAROUSEL SLIDE ── */
+  .carousel-track { display: flex; transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  .carousel-slide { flex-shrink: 0; width: 100%; }
+  .carousel-slide img, .carousel-slide video { width: 100%; height: 100%; object-fit: cover; display: block; }
+</style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}</style></head>
+<body style="overscroll-behavior-x: auto;">
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="logo">
+    <div class="logo-mark">F</div>
+    <span class="logo-text">Feed<span>Frame</span></span>
+  </div>
+  <span class="header-badge">Social Mockup Tool — Connells Group</span>
+</header>
+
+<div class="app-layout">
+
+  <!-- LEFT PANEL -->
+  <aside class="left-panel">
+
+    <!-- Upload -->
+    <div class="panel-section">
+      <div class="panel-label">Upload Media</div>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="fileInput" accept="image/*,video/*" multiple="">
+        <div class="upload-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        </div>
+        <div class="upload-title">Drop files here or click to browse</div>
+        <div class="upload-sub">Images &amp; videos · Multiple files supported</div>
+      </div>
+
+      <!-- Aspect ratio warning -->
+      <div class="ratio-warning" id="ratioWarning">
+        <div class="ratio-warning-title">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          <span id="ratioWarningTitle">Aspect ratio mismatch</span>
+        </div>
+        <div class="ratio-warning-text" id="ratioWarningText"></div>
+        <div class="ratio-warning-actions">
+          <button class="btn-resubmit" onclick="clearFiles()">↩ Resubmit files</button>
+          <button class="btn-continue" onclick="continueWithCrop()">Continue &amp; crop →</button>
+        </div>
+      </div>
+
+      <!-- File list -->
+      <div class="file-list" id="fileList"><div class="file-item">
+      <div class="file-thumb"><div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a2332;color:white;font-size:14px;">▶</div></div>
+      <div class="file-info">
+        <div class="file-name">Paid-Social-META-_-Vertical-static-Flooring-2.mp4</div>
+        <div class="file-meta">Video · 19.2MB</div>
+      </div>
+      <button class="file-remove" onclick="removeFile(0)" title="Remove">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button></div></div>
+    </div>
+
+    <!-- Platform -->
+    <div class="panel-section">
+      <div class="panel-label">Platform</div>
+      <div class="platform-grid">
+        <button class="platform-btn" onclick="setPlatform(&#39;ig-feed&#39;, this)">
+          <span class="platform-icon">📷</span>
+          <span class="platform-name">Instagram Feed</span>
+        </button>
+        <button class="platform-btn active" onclick="setPlatform(&#39;ig-story&#39;, this)">
+          <span class="platform-icon">⭕</span>
+          <span class="platform-name">Stories / Reels</span>
+        </button>
+        <button class="platform-btn" onclick="setPlatform(&#39;tiktok&#39;, this)">
+          <span class="platform-icon">🎵</span>
+          <span class="platform-name">TikTok</span>
+        </button>
+        <button class="platform-btn" onclick="setPlatform(&#39;linkedin&#39;, this)">
+          <span class="platform-icon">💼</span>
+          <span class="platform-name">LinkedIn</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="panel-section" style="flex:1; background: #f8fafc;">
+      <div class="panel-label">Platform Specs</div>
+      <div id="specInfo" style="font-size:12px; color: var(--text-secondary); line-height: 1.8;">
+        <div id="specContent"><b>Recommended ratio:</b> 9:16 (vertical)<br><b>Resolution:</b> 1080 × 1920px<br><b>Video max:</b> 60 seconds<br><b>Safe zone:</b> Keep text centre</div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- RIGHT PANEL -->
+  <main class="right-panel" id="rightPanel">
+    <div class="preview-header">
+      <div class="preview-title">Live Preview</div>
+      <span class="preview-platform-tag" id="platformTag">Stories / Reels</span>
+    </div>
+
+    <div id="previewContainer" style="width:100%; display:flex; justify-content:center; flex:1;">
+      <!-- Empty state -->
+      <div class="empty-state" id="emptyState" style="display: none;">
+        <div class="empty-icon">
+          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+        </div>
+        <div class="empty-title">Nothing to preview yet</div>
+        <div class="empty-sub">Upload a file and choose a platform to see your mockup</div>
+      </div>
+
+      <!-- Mockup rendered here -->
+      <div id="mockupOutput" style="width: 100%; display: flex; justify-content: center;" class="preview-animate">
+  <div class="ig-story-wrapper">
+    <video src="blob:null/eb448ff7-2cf4-4d90-b794-47bdbb30b790" muted="" loop="" autoplay="" playsinline="" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;"></video>
+    <div class="story-overlay"></div>
+    <div class="story-top">
+      <div class="story-progress"><div class="story-progress-bar active"></div></div>
+      <div class="story-header">
+        <div class="story-avatar"><svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+    <rect width="28" height="28" fill="#1a2332"></rect>
+    <text x="14" y="18.48" font-family="serif" font-style="italic" font-weight="300" font-size="10.64" fill="white" text-anchor="middle">CG</text>
+  </svg></div>
+        <div>
+          <div class="story-username">connellsgroup</div>
+          <div class="story-time">2h ago</div>
+        </div>
+        <div style="margin-left:auto; color:white; opacity:0.8;">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="12" cy="19" r="1.5"></circle></svg>
+        </div>
+      </div>
+    </div>
+    <div class="story-bottom">
+      <input class="story-reply-input" placeholder="Reply to connellsgroup…" readonly="">
+      <div style="color:white; opacity:0.8;">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+      </div>
+      <div style="color:white; opacity:0.8;">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      </div>
+    </div>
+  </div></div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+// ── STATE ──
+let files = [];
+let currentPlatform = 'ig-feed';
+let carouselIndex = 0;
+let warningDismissed = false;
+
+const PLATFORM_RATIOS = {
+  'ig-feed': { ratio: 4/5, label: '4:5', name: 'Instagram Feed' },
+  'ig-story': { ratio: 9/16, label: '9:16', name: 'Instagram Stories/Reels' },
+  'tiktok': { ratio: 9/16, label: '9:16', name: 'TikTok' },
+  'linkedin': { ratio: 1.91, label: '1.91:1', name: 'LinkedIn' }
+};
+
+const PLATFORM_SPECS = {
+  'ig-feed': `<b>Recommended ratio:</b> 4:5 (portrait)<br><b>Max resolution:</b> 1080 × 1350px<br><b>Video max:</b> 60 seconds<br><b>Carousel:</b> Up to 10 slides`,
+  'ig-story': `<b>Recommended ratio:</b> 9:16 (vertical)<br><b>Resolution:</b> 1080 × 1920px<br><b>Video max:</b> 60 seconds<br><b>Safe zone:</b> Keep text centre`,
+  'tiktok': `<b>Recommended ratio:</b> 9:16 (vertical)<br><b>Resolution:</b> 1080 × 1920px<br><b>Video max:</b> 10 minutes<br><b>File size:</b> Max 500MB`,
+  'linkedin': `<b>Recommended ratio:</b> 1.91:1 (landscape)<br><b>Resolution:</b> 1200 × 627px<br><b>Video max:</b> 10 minutes<br><b>File size:</b> Max 200MB`
+};
+
+const PLATFORM_LABELS = {
+  'ig-feed': 'Instagram Feed',
+  'ig-story': 'Stories / Reels',
+  'tiktok': 'TikTok',
+  'linkedin': 'LinkedIn'
+};
+
+// CG dummy data
+const CG = {
+  username: 'connellsgroup',
+  displayName: 'Connells Group',
+  handle: '@connellsgroup',
+  tagline: 'UK\'s largest property services group · Est. 1936',
+  followers: '12.4K',
+  caption: "🏡 From first home to forever home — we're with you every step of the way. Discover our full range of property services across 1,200+ branches nationwide.",
+  hashtags: '#ConnellsGroup #PropertyUK #EstateAgency #HomeSweetHome #UKProperty',
+  likes: '847',
+  comments: '34',
+  shares: '128',
+  tiktokCaption: "The UK\'s largest estate agency network 🏡✨ Over 1,200 branches and 80+ local brands — we help people find their dream home every day.",
+  liCaption: "We\'re proud to support thousands of families across the UK in finding their next home. With over 1,200 branches and 80+ trusted local estate agency brands, Connells Group remains the UK\'s leading property services provider.\n\n#ConnellsGroup #PropertyServices #UKHousing #RealEstate"
+};
+
+// CG Avatar SVG
+function cgAvatarSVG(size = 32) {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+    <rect width="${size}" height="${size}" fill="#1a2332"/>
+    <text x="${size/2}" y="${size*0.66}" font-family="serif" font-style="italic" font-weight="300" font-size="${size*0.38}" fill="white" text-anchor="middle">CG</text>
+  </svg>`;
+}
+
+// ── FILE HANDLING ──
+const fileInput = document.getElementById('fileInput');
+const uploadZone = document.getElementById('uploadZone');
+
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadZone.classList.remove('drag-over');
+  handleFiles(Array.from(e.dataTransfer.files));
+});
+fileInput.addEventListener('change', e => handleFiles(Array.from(e.target.files)));
+
+function handleFiles(newFiles) {
+  const valid = newFiles.filter(f => f.type.startsWith('image/') || f.type.startsWith('video/'));
+  files = [...files, ...valid];
+  warningDismissed = false;
+  renderFileList();
+  checkAspectRatios();
+}
+
+function renderFileList() {
+  const list = document.getElementById('fileList');
+  list.innerHTML = '';
+  files.forEach((f, i) => {
+    const item = document.createElement('div');
+    item.className = 'file-item';
+    const isVideo = f.type.startsWith('video/');
+    const url = URL.createObjectURL(f);
+    const thumbIcon = isVideo
+      ? `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a2332;color:white;font-size:14px;">▶</div>`
+      : `<img src="${url}" style="width:100%;height:100%;object-fit:cover;">`;
+    item.innerHTML = `
+      <div class="file-thumb">${thumbIcon}</div>
+      <div class="file-info">
+        <div class="file-name">${f.name}</div>
+        <div class="file-meta">${isVideo ? 'Video' : 'Image'} · ${(f.size/1024/1024).toFixed(1)}MB</div>
+      </div>
+      <button class="file-remove" onclick="removeFile(${i})" title="Remove">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>`;
+    list.appendChild(item);
+  });
+  renderMockup();
+}
+
+function removeFile(i) {
+  files.splice(i, 1);
+  warningDismissed = false;
+  renderFileList();
+  checkAspectRatios();
+}
+
+function clearFiles() {
+  files = [];
+  fileInput.value = '';
+  warningDismissed = false;
+  renderFileList();
+  document.getElementById('ratioWarning').classList.remove('visible');
+}
+
+// ── ASPECT RATIO CHECK ──
+function checkAspectRatios() {
+  if (!files.length || warningDismissed) {
+    document.getElementById('ratioWarning').classList.remove('visible');
+    return;
+  }
+  // For images we can check synchronously via Image element
+  const firstFile = files[0];
+  if (!firstFile.type.startsWith('image/')) {
+    document.getElementById('ratioWarning').classList.remove('visible');
+    return;
+  }
+  const url = URL.createObjectURL(firstFile);
+  const img = new Image();
+  img.onload = () => {
+    const fileRatio = img.width / img.height;
+    const { ratio, label, name } = PLATFORM_RATIOS[currentPlatform];
+    const tolerance = 0.15;
+    if (Math.abs(fileRatio - ratio) > tolerance) {
+      const detected = fileRatio > 1.5 ? '16:9 landscape' : fileRatio > 0.9 ? '1:1 square' : fileRatio > 0.75 ? '4:5 portrait' : '9:16 vertical';
+      document.getElementById('ratioWarningTitle').textContent = 'Aspect ratio mismatch detected';
+      document.getElementById('ratioWarningText').textContent =
+        `Your file appears to be ${detected}. ${name} works best with a ${label} ratio. You can resubmit a correctly cropped file, or continue and we'll crop to fit the frame.`;
+      document.getElementById('ratioWarning').classList.add('visible');
+    } else {
+      document.getElementById('ratioWarning').classList.remove('visible');
+    }
+    URL.revokeObjectURL(url);
+  };
+  img.src = url;
+}
+
+function continueWithCrop() {
+  warningDismissed = true;
+  document.getElementById('ratioWarning').classList.remove('visible');
+  renderMockup();
+}
+
+// ── PLATFORM SWITCHING ──
+function setPlatform(platform, btn) {
+  currentPlatform = platform;
+  carouselIndex = 0;
+  warningDismissed = false;
+
+  // Active state on buttons
+  document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Tag
+  document.getElementById('platformTag').textContent = PLATFORM_LABELS[platform];
+
+  // Specs
+  document.getElementById('specContent').innerHTML = PLATFORM_SPECS[platform];
+
+  // Check ratios & re-render
+  checkAspectRatios();
+  renderMockup();
+}
+
+// Init specs
+document.getElementById('specContent').innerHTML = PLATFORM_SPECS['ig-feed'];
+
+// ── MOCKUP RENDERING ──
+function renderMockup() {
+  const empty = document.getElementById('emptyState');
+  const output = document.getElementById('mockupOutput');
+
+  if (!files.length) {
+    empty.style.display = 'flex';
+    output.style.display = 'none';
+    return;
+  }
+
+  empty.style.display = 'none';
+  output.style.display = 'flex';
+  output.className = 'preview-animate';
+
+  let html = '';
+  if (currentPlatform === 'ig-feed') html = renderIGFeed();
+  else if (currentPlatform === 'ig-story') html = renderIGStory();
+  else if (currentPlatform === 'tiktok') html = renderTikTok();
+  else if (currentPlatform === 'linkedin') html = renderLinkedIn();
+
+  output.innerHTML = html;
+
+  // Attach carousel listeners
+  if (currentPlatform === 'ig-feed') attachCarousel();
+  // Autoplay videos
+  output.querySelectorAll('video').forEach(v => {
+    v.muted = true;
+    v.loop = true;
+    v.playsInline = true;
+    v.play().catch(() => {});
+  });
+}
+
+function mediaElement(file, extraStyle = '') {
+  const url = URL.createObjectURL(file);
+  if (file.type.startsWith('video/')) {
+    return `<video src="${url}" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;display:block;${extraStyle}"></video>`;
+  } else {
+    return `<img src="${url}" style="width:100%;height:100%;object-fit:cover;display:block;${extraStyle}" alt="post">`;
+  }
+}
+
+// ── INSTAGRAM FEED ──
+function renderIGFeed() {
+  const isCarousel = files.length > 1;
+  const avatarSVG = cgAvatarSVG(32);
+  const avatarSVGLarge = cgAvatarSVG(52);
+
+  let mediaHtml = '';
+  if (isCarousel) {
+    const slides = files.map(f =>
+      `<div class="carousel-slide" style="aspect-ratio:4/5;">${mediaElement(f)}</div>`
+    ).join('');
+    const dots = files.map((_, i) =>
+      `<div class="ig-dot ${i === 0 ? 'active' : ''}" data-index="${i}"></div>`
+    ).join('');
+    mediaHtml = `
+      <div class="ig-media ratio-4-5" style="overflow:hidden; position:relative;">
+        <div class="carousel-track" id="igCarousel" style="height:100%;">${slides}</div>
+        <div class="ig-carousel-nav">
+          <button class="ig-carousel-btn" id="prevBtn" disabled onclick="moveCarousel(-1)">
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="ig-carousel-btn" id="nextBtn" onclick="moveCarousel(1)">
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+        <div class="ig-carousel-dots" id="igDots">${dots}</div>
+      </div>`;
+  } else {
+    mediaHtml = `<div class="ig-media ratio-4-5">${mediaElement(files[0])}</div>`;
+  }
+
+  return `
+  <div class="ig-feed-wrapper" style="width:100%; max-width:470px;">
+    <!-- Top bar -->
+    <div class="ig-topbar">
+      <div class="ig-logo">Instagram</div>
+      <div class="ig-topbar-icons">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+    </div>
+    <!-- Stories -->
+    <div class="ig-stories">
+      <div class="ig-story">
+        <div class="ig-story-ring yours">
+          <div class="ig-story-inner" style="background:white;">
+            <svg width="20" height="20" fill="none" stroke="#aaa" stroke-width="1.8" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+        <span class="ig-story-name">Your story</span>
+      </div>
+      ${['Hampton', 'Barnard', 'Fox&Sons', 'Taylors', 'Dixons'].map(n => `
+      <div class="ig-story">
+        <div class="ig-story-ring">
+          <div class="ig-story-inner" style="background: #e2e8f0;">
+            <svg width="18" height="18" fill="none" stroke="#94a3b8" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+        </div>
+        <span class="ig-story-name">${n}</span>
+      </div>`).join('')}
+    </div>
+    <!-- Post -->
+    <div class="ig-post">
+      <div class="ig-post-header">
+        <div class="ig-avatar">${avatarSVG}</div>
+        <div class="ig-post-meta">
+          <div class="ig-username">${CG.username}</div>
+          <div class="ig-location">Leighton Buzzard, Bedfordshire</div>
+        </div>
+        <div class="ig-more">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+        </div>
+      </div>
+      ${mediaHtml}
+      <div class="ig-actions">
+        <div class="ig-action">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div class="ig-action">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="ig-action">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </div>
+        <div class="ig-action ig-bookmark">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </div>
+      </div>
+      <div class="ig-likes">${CG.likes} likes</div>
+      <div class="ig-caption"><strong>${CG.username}</strong> ${CG.caption} <span class="hashtag">${CG.hashtags}</span></div>
+      <div class="ig-comment-count">View all ${CG.comments} comments</div>
+      <div class="ig-timestamp">2 hours ago</div>
+    </div>
+  </div>`;
+}
+
+// ── CAROUSEL CONTROL ──
+function attachCarousel() {
+  carouselIndex = 0;
+}
+
+function moveCarousel(dir) {
+  const track = document.getElementById('igCarousel');
+  const dots = document.querySelectorAll('.ig-dot');
+  if (!track) return;
+  carouselIndex = Math.max(0, Math.min(files.length - 1, carouselIndex + dir));
+  track.style.transform = `translateX(-${carouselIndex * 100}%)`;
+  dots.forEach((d, i) => d.classList.toggle('active', i === carouselIndex));
+  document.getElementById('prevBtn').disabled = carouselIndex === 0;
+  document.getElementById('nextBtn').disabled = carouselIndex === files.length - 1;
+}
+
+// ── INSTAGRAM STORY ──
+function renderIGStory() {
+  const file = files[0];
+  const progressBars = Array.from({length: Math.min(files.length, 5)}, (_, i) =>
+    `<div class="story-progress-bar ${i === 0 ? 'active' : ''}"></div>`
+  ).join('');
+
+  return `
+  <div class="ig-story-wrapper">
+    ${mediaElement(file, 'position:absolute;inset:0;')}
+    <div class="story-overlay"></div>
+    <div class="story-top">
+      <div class="story-progress">${progressBars}</div>
+      <div class="story-header">
+        <div class="story-avatar">${cgAvatarSVG(28)}</div>
+        <div>
+          <div class="story-username">${CG.username}</div>
+          <div class="story-time">2h ago</div>
+        </div>
+        <div style="margin-left:auto; color:white; opacity:0.8;">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="story-bottom">
+      <input class="story-reply-input" placeholder="Reply to ${CG.username}…" readonly>
+      <div style="color:white; opacity:0.8;">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <div style="color:white; opacity:0.8;">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── TIKTOK ──
+function renderTikTok() {
+  const file = files[0];
+  return `
+  <div class="tiktok-wrapper">
+    ${mediaElement(file, 'position:absolute;inset:0;')}
+    <div class="tiktok-overlay"></div>
+    <div class="tiktok-topbar">
+      <span class="tiktok-tab">Following</span>
+      <span class="tiktok-tab active">For You</span>
+      <span class="tiktok-tab">Explore</span>
+    </div>
+    <div class="tiktok-right">
+      <div style="position:relative; margin-bottom:8px;">
+        <div class="tiktok-avatar-ring">${cgAvatarSVG(40)}</div>
+        <div class="tiktok-plus">+</div>
+      </div>
+      <div class="tiktok-action">
+        <svg width="26" height="26" fill="none" stroke="white" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="tiktok-action-count">84.7K</span>
+      </div>
+      <div class="tiktok-action">
+        <svg width="26" height="26" fill="none" stroke="white" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="tiktok-action-count">1,234</span>
+      </div>
+      <div class="tiktok-action">
+        <svg width="26" height="26" fill="none" stroke="white" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        <span class="tiktok-action-count">Share</span>
+      </div>
+    </div>
+    <div class="tiktok-bottom">
+      <div class="tiktok-username">@${CG.username}</div>
+      <div class="tiktok-caption">${CG.tiktokCaption}</div>
+      <div class="tiktok-sound">
+        <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        Connells Group Original · Property UK
+      </div>
+    </div>
+    <div class="tiktok-disc">${cgAvatarSVG(26)}</div>
+  </div>`;
+}
+
+// ── LINKEDIN ──
+function renderLinkedIn() {
+  const file = files[0];
+  const liCaption = CG.liCaption.replace(/#(\w+)/g, '<span class="li-hashtag">#$1</span>').replace(/\n/g, '<br>');
+
+  return `
+  <div class="linkedin-wrapper">
+    <div class="li-header">
+      <span class="li-logo">in</span>
+      <input class="li-search" placeholder="Search" readonly>
+    </div>
+    <div class="li-post">
+      <div class="li-post-header">
+        <div class="li-avatar">${cgAvatarSVG(40)}</div>
+        <div class="li-meta">
+          <div class="li-name">${CG.displayName}</div>
+          <div class="li-tagline">${CG.tagline}</div>
+          <div class="li-time">2h · <span class="li-globe">🌐</span></div>
+        </div>
+        <div style="margin-left:auto; color:#666; cursor:pointer;">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+        </div>
+      </div>
+      <div class="li-caption-text">${liCaption}</div>
+    </div>
+    <div class="li-media">${mediaElement(file)}</div>
+    <div class="li-reactions">
+      <div style="display:flex;align-items:center;gap:5px;">
+        <span>👍❤️🎉</span>
+        <span style="font-size:12px;color:#666;">Heather W. and 1,203 others</span>
+      </div>
+      <div style="font-size:12px;color:#666;">${CG.comments} comments · ${CG.shares} reposts</div>
+    </div>
+    <div class="li-actions">
+      <div class="li-action-btn">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+        Like
+      </div>
+      <div class="li-action-btn">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Comment
+      </div>
+      <div class="li-action-btn">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        Repost
+      </div>
+      <div class="li-action-btn">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send
+      </div>
+    </div>
+  </div>`;
+}
+</script>
+
+
+</body></html>
